@@ -8,6 +8,7 @@
 - 查看今日详细使用情况（模型统计、Token 分解、时段分布、凭证统计）
 - **实时查询 OAuth 账号配额**（剩余百分比、刷新时间）
 - 输出统一为文本消息，适合在私聊和群聊里直接阅读
+- 已移除图片渲染能力，当前实现仅维护文本输出链路
 - 支持多种凭证类型的配额查询：
   - 🚀 **Antigravity** - 反重力账号
   - 💎 **GeminiCLI** - Gemini CLI 账号
@@ -37,6 +38,17 @@ git clone https://github.com/muyouzhi6/astrbot_plugin_cliproxy_stats.git
 | `max_render_antigravity` | 配额文本中最多显示的 Antigravity 账号数 |
 | `max_render_gemini_cli` | 配额文本中最多显示的 GeminiCLI 账号数 |
 | `max_render_codex` | 配额文本中最多显示的 Codex 账号数 |
+
+## 项目结构
+
+- `main.py`: AstrBot 插件入口、命令注册和轻量编排
+- `constants.py`: 静态常量、请求头、provider 信息、LLM prompt
+- `client.py`: CLIProxyAPI HTTP 客户端和 quota 拉取逻辑
+- `quota_parser.py`: Google / GeminiCLI / Codex quota 解析与时间格式化
+- `builders.py`: overview / today / quota 数据构建
+- `text_renderer.py`: 纯文本输出拼装
+- `llm_analysis.py`: LLM provider 选择和分析生成
+- `_conf_schema.json`: 插件配置 schema
 
 ## 使用方法
 

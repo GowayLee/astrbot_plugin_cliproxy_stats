@@ -4,10 +4,15 @@
 
 This repository is an AstrBot plugin with a flat layout.
 
-- `main.py`: plugin entry point, AstrBot command handlers, API client logic, quota parsing, and LLM analysis flow.
-- `stats_renderer.py`: legacy Pillow-based renderer kept for later cleanup; main flow now uses text output.
+- `main.py`: plugin entry point, AstrBot command handlers, and light orchestration.
+- `constants.py`: API URLs, request headers, provider metadata, and LLM prompt templates.
+- `client.py`: CLIProxyAPI HTTP client and remote quota fetching helpers.
+- `quota_parser.py`: quota parsing and reset-time formatting helpers.
+- `builders.py`: overview/today/quota structured data builders.
+- `text_renderer.py`: pure-text rendering helpers for command output.
+- `llm_analysis.py`: provider lookup and LLM analysis generation.
 - `metadata.yaml`: plugin metadata such as name, version, and upstream repo.
-- `_conf_schema.json`: AstrBot configuration schema for `cpa_url`, `cpa_password`, rendering options, and LLM settings.
+- `_conf_schema.json`: AstrBot configuration schema for `cpa_url`, `cpa_password`, text output limits, and LLM settings.
 - `requirements.txt`: runtime Python dependencies.
 - `README.md`: user-facing install and command documentation.
 
@@ -16,11 +21,11 @@ There is no `tests/` directory yet. Keep new modules at the repository root unle
 ## Build, Test, and Development Commands
 
 - `python -m venv .venv && source .venv/bin/activate`: create and activate a dev environment.
-- `pip install -r requirements.txt`: install `aiohttp` and `Pillow`.
-- `python -m py_compile main.py stats_renderer.py`: quick syntax validation before committing.
+- `pip install -r requirements.txt`: install runtime dependencies.
+- `./.venv/bin/python -m py_compile main.py constants.py client.py quota_parser.py builders.py text_renderer.py llm_analysis.py`: quick syntax validation before committing.
 - `python -m compileall .`: verify the whole plugin compiles cleanly.
 
-For runtime checks, place the repo in AstrBot’s `data/plugins/` directory, reload it, and exercise `/cpa`, `/cpa today`, and `/cpa额度`.
+For runtime checks, place the repo in AstrBot’s `data/plugins/` directory, reload it, and exercise `/cpa`, `/cpa today`, `/cpa额度`, `/cpa分析`, and `/cpa服务商`.
 
 ## Coding Style & Naming Conventions
 
@@ -38,7 +43,7 @@ No formatter or linter is configured, so match the surrounding style and avoid u
 
 There is no automated test framework committed yet. For each change:
 
-- run `python -m py_compile main.py stats_renderer.py`;
+- run `./.venv/bin/python -m py_compile main.py constants.py client.py quota_parser.py builders.py text_renderer.py llm_analysis.py`;
 - verify affected AstrBot commands manually against a configured CLIProxyAPI instance;
 - check affected text output manually against a configured CLIProxyAPI instance.
 
