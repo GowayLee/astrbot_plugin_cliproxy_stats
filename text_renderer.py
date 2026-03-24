@@ -3,6 +3,16 @@
 from typing import Any, Dict, List, Optional
 
 
+def _build_quota_account_title(
+    account: Dict[str, Any], display_counts: Dict[str, int]
+) -> str:
+    display = account.get("email", "未知账号")
+    auth_index = account.get("auth_index", "")
+    if auth_index and display_counts.get(display, 0) > 1:
+        return f"{account.get('icon', '•')} {display} [{auth_index}]"
+    return f"{account.get('icon', '•')} {display}"
+
+
 def build_text_from_data(data: Dict[str, Any]) -> Optional[str]:
     stats_type = data.get("stats_type", "")
     lines: List[str] = []
@@ -92,6 +102,10 @@ def build_text_from_data(data: Dict[str, Any]) -> Optional[str]:
         lines.append(data.get("title", "📊 OAuth 配额状态"))
         lines.append("")
         accounts = data.get("accounts", [])
+        subtitle = data.get("subtitle", "")
+        if subtitle:
+            lines.append(f"账号概览: {subtitle}")
+            lines.append("")
         provider_order = data.get("provider_groups", [])
         grouped_accounts: Dict[str, List[Dict[str, Any]]] = {
             provider: [] for provider in provider_order
@@ -107,6 +121,11 @@ def build_text_from_data(data: Dict[str, Any]) -> Optional[str]:
                 continue
             provider_name = provider_accounts[0].get("provider_name", provider.title())
             provider_icon = provider_accounts[0].get("provider_icon", "📦")
+            provider_total = len(provider_accounts)
+            display_counts: Dict[str, int] = {}
+            for account in provider_accounts:
+                display = account.get("email", "未知账号")
+                display_counts[display] = display_counts.get(display, 0) + 1
             config_key = "gemini-cli" if provider == "gemini" else provider
             max_count = data.get("max_render_count", {}).get(config_key, 0)
             truncated_count = 0
@@ -114,17 +133,15 @@ def build_text_from_data(data: Dict[str, Any]) -> Optional[str]:
                 truncated_count = len(provider_accounts) - max_count
                 provider_accounts = provider_accounts[:max_count]
 
-            lines.append(f"━━━ {provider_icon} {provider_name} ━━━")
+            lines.append(f"━━━ {provider_icon} {provider_name}（{provider_total}）━━━")
             for account in provider_accounts:
-                lines.append(
-                    f"{account.get('icon', '•')} {account.get('email', '未知账号')}"
-                )
+                lines.append(_build_quota_account_title(account, display_counts))
                 if account.get("error"):
                     lines.append(f"   ⚠️ {account['error']}")
                 elif account.get("quotas"):
                     for quota in account["quotas"]:
                         lines.append(
-                            f"   {quota['icon']} {quota['label']}: {quota['percent']}% | 刷新: {quota['reset_time']}"
+                            f"   - {quota['icon']} {quota['label']} {quota['percent']}% · 刷新 {quota['reset_time']}"
                         )
                 else:
                     lines.append("   ⚠️ 暂无配额信息")

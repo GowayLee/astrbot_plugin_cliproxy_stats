@@ -367,6 +367,7 @@ async def build_quota_data(
             account_data = {
                 "icon": icon,
                 "email": display,
+                "auth_index": auth_index,
                 "provider": provider,
                 "provider_name": provider_info["name"],
                 "provider_icon": provider_info["icon"],

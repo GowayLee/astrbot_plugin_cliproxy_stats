@@ -115,18 +115,52 @@ Token 分解
 ```text
 📊 OAuth 配额状态
 
-━━━ 🚀 Antigravity ━━━
-✅ example@gmail.com
-   🟢 Claude/GPT: 86% | 刷新: 03/25 00:36
-   🟡 Gemini 3 Pro: 65% | 刷新: 03/25 00:12
+账号概览: 🚀 Antigravity (1) | 💎 GeminiCLI (1)
 
-━━━ 💎 GeminiCLI ━━━
+━━━ 🚀 Antigravity（1）━━━
+✅ example@gmail.com
+   - 🟢 Claude/GPT 86% · 刷新 03/25 00:36
+   - 🟡 Gemini 3 Pro 65% · 刷新 03/25 00:12
+
+━━━ 💎 GeminiCLI（1）━━━
 ✅ another@gmail.com
-   🟢 gemini-2.5-pro: 92% | 刷新: 03/25 00:20
-   🟠 gemini-2.5-flash: 45% | 刷新: 03/25 00:30
+   - 🟢 gemini-2.5-pro 92% · 刷新 03/25 00:20
+   - 🟠 gemini-2.5-flash 45% · 刷新 03/25 00:30
 
 💡 配额每日自动刷新，百分比为剩余额度
 ```
+
+## 本地联调脚本
+
+为了反复微调 `/cpa额度` 的文本样式，仓库提供了几个直接复用现有模块的本地脚本。统一使用 `./.venv/bin/python` 运行。
+
+### 1. 直接预览真实 `/cpa额度` 文本
+
+```bash
+./.venv/bin/python scripts/quota_text_preview.py --cpa-url 127.0.0.1:8317 --cpa-password 123
+```
+
+- 支持环境变量：`CPA_URL`、`CPA_PASSWORD`、`CPA_VERIFY_SSL`
+- 地址可以直接写成 `127.0.0.1:8317`，脚本会自动补成 `http://...`
+- 可选覆盖截断数：`--max-render-antigravity`、`--max-render-gemini-cli`、`--max-render-codex`
+
+### 2. 抓取真实 quota 样本到 JSON
+
+```bash
+./.venv/bin/python scripts/quota_snapshot.py --cpa-url 127.0.0.1:8317 --cpa-password 123 --output tmp/quota_snapshot.json
+```
+
+- 保存内容包含 `auth_data`、最终 `quota_data` 和逐账号 `raw_quota_results`
+- 适合先抓一份真实样本，再离线反复调文本格式
+
+### 3. 离线重渲染已保存的 quota 样本
+
+```bash
+./.venv/bin/python scripts/quota_text_from_snapshot.py tmp/quota_snapshot.json --max-render-codex 1
+```
+
+- 主要用于观察 provider 分组和截断效果
+- 不再请求真实 CPA 服务，适合纯调 `text_renderer.py`
 
 ### /cpa总览 - 查看综合概览
 

@@ -2,13 +2,17 @@
 
 import asyncio
 import json
+import logging
 import re
 from typing import Any, Dict, Optional
 
 import aiohttp
 from aiohttp import ClientTimeout
 
-from astrbot.api import logger
+try:
+    from astrbot.api import logger
+except ImportError:
+    logger = logging.getLogger(__name__)
 
 from constants import (
     ANTIGRAVITY_QUOTA_URLS,
