@@ -6,7 +6,10 @@ from typing import Any, Dict, List, Optional
 from astrbot.api import logger
 from astrbot.core.provider.provider import Provider
 
-from constants import LLM_ANALYSIS_PROMPT
+try:
+    from .constants import LLM_ANALYSIS_PROMPT
+except ImportError:
+    from constants import LLM_ANALYSIS_PROMPT
 
 
 def get_llm_provider(

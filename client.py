@@ -14,14 +14,24 @@ try:
 except ImportError:
     logger = logging.getLogger(__name__)
 
-from constants import (
-    ANTIGRAVITY_QUOTA_URLS,
-    ANTIGRAVITY_REQUEST_HEADERS,
-    CODEX_QUOTA_HEADERS,
-    CODEX_QUOTA_URL,
-    GEMINI_CLI_QUOTA_HEADERS,
-    GEMINI_CLI_QUOTA_URL,
-)
+try:
+    from .constants import (
+        ANTIGRAVITY_QUOTA_URLS,
+        ANTIGRAVITY_REQUEST_HEADERS,
+        CODEX_QUOTA_HEADERS,
+        CODEX_QUOTA_URL,
+        GEMINI_CLI_QUOTA_HEADERS,
+        GEMINI_CLI_QUOTA_URL,
+    )
+except ImportError:
+    from constants import (
+        ANTIGRAVITY_QUOTA_URLS,
+        ANTIGRAVITY_REQUEST_HEADERS,
+        CODEX_QUOTA_HEADERS,
+        CODEX_QUOTA_URL,
+        GEMINI_CLI_QUOTA_HEADERS,
+        GEMINI_CLI_QUOTA_URL,
+    )
 
 
 def extract_project_from_filename(filename: str) -> Optional[str]:

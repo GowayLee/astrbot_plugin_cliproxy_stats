@@ -12,18 +12,32 @@ from astrbot.api import AstrBotConfig, logger
 from astrbot.api.event import AstrMessageEvent, filter
 from astrbot.api.star import Context, Star
 
-from builders import build_overview_data, build_quota_data, build_today_data
-from client import CPAClient
-from llm_analysis import (
-    generate_llm_analysis,
-    get_available_providers,
-    get_llm_provider,
-)
-from text_renderer import (
-    build_analysis_report,
-    build_provider_list_text,
-    build_text_from_data,
-)
+try:
+    from .builders import build_overview_data, build_quota_data, build_today_data
+    from .client import CPAClient
+    from .llm_analysis import (
+        generate_llm_analysis,
+        get_available_providers,
+        get_llm_provider,
+    )
+    from .text_renderer import (
+        build_analysis_report,
+        build_provider_list_text,
+        build_text_from_data,
+    )
+except ImportError:
+    from builders import build_overview_data, build_quota_data, build_today_data
+    from client import CPAClient
+    from llm_analysis import (
+        generate_llm_analysis,
+        get_available_providers,
+        get_llm_provider,
+    )
+    from text_renderer import (
+        build_analysis_report,
+        build_provider_list_text,
+        build_text_from_data,
+    )
 
 
 class Main(Star):

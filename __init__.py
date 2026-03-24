@@ -1,0 +1,1 @@
+"""CLIProxyAPI stats plugin package."""

@@ -3,13 +3,22 @@
 from datetime import date, datetime
 from typing import Any, Callable, Dict, Optional
 
-from constants import PROVIDER_INFO, QUOTA_SUPPORTED_PROVIDERS
-from quota_parser import (
-    format_reset_time,
-    parse_codex_quota,
-    parse_gemini_cli_quota_dynamic,
-    parse_google_quota_dynamic,
-)
+try:
+    from .constants import PROVIDER_INFO, QUOTA_SUPPORTED_PROVIDERS
+    from .quota_parser import (
+        format_reset_time,
+        parse_codex_quota,
+        parse_gemini_cli_quota_dynamic,
+        parse_google_quota_dynamic,
+    )
+except ImportError:
+    from constants import PROVIDER_INFO, QUOTA_SUPPORTED_PROVIDERS
+    from quota_parser import (
+        format_reset_time,
+        parse_codex_quota,
+        parse_gemini_cli_quota_dynamic,
+        parse_google_quota_dynamic,
+    )
 
 
 def format_tokens(tokens: int) -> str:
