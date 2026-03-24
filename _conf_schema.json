@@ -29,28 +29,22 @@
     "hint": "发送 /cpa服务商 查看可用列表。留空使用当前对话模型",
     "default": ""
   },
-  "high_res_render": {
-    "description": "高分辨率渲染",
-    "type": "bool",
-    "hint": "生成更清晰的统计图片（3x 渲染），关闭则使用 2x",
-    "default": true
-  },
   "max_render_antigravity": {
-    "description": "Antigravity 最大渲染数量",
+    "description": "Antigravity 文本显示数量",
     "type": "int",
-    "hint": "配额图片中最多显示的 Antigravity 账号数，0 表示不限制",
+    "hint": "配额文本中最多显示的 Antigravity 账号数，0 表示不限制",
     "default": 10
   },
   "max_render_gemini_cli": {
-    "description": "GeminiCLI 最大渲染数量",
+    "description": "GeminiCLI 文本显示数量",
     "type": "int",
-    "hint": "配额图片中最多显示的 GeminiCLI 账号数，0 表示不限制",
+    "hint": "配额文本中最多显示的 GeminiCLI 账号数，0 表示不限制",
     "default": 10
   },
   "max_render_codex": {
-    "description": "Codex 最大渲染数量",
+    "description": "Codex 文本显示数量",
     "type": "int",
-    "hint": "配额图片中最多显示的 Codex 账号数，0 表示不限制",
+    "hint": "配额文本中最多显示的 Codex 账号数，0 表示不限制",
     "default": 10
   }
 }
